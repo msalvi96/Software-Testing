@@ -16,6 +16,15 @@ class SimpleTriangle:
         self.side2 = side2
         self.side3 = side3
 
+        if not(isinstance(self.side1, int) and isinstance(self.side2, int) and isinstance(self.side3, int)):
+            raise ValueError
+
+        if ((self.side1 + self.side2) < self.side3) or ((self.side2 + self.side3) < self.side1) or ((self.side1 + self.side3) < self.side2):
+            raise ArithmeticError
+
+        if self.side1 <= 0 or self.side2 <= 0 or self.side3 <= 0:
+            raise AttributeError
+
     def right_triangle(self):
         """ Right Angle Triangle """
 
@@ -129,7 +138,17 @@ class TriangleTest(unittest.TestCase):
 def classify_triangle(a, b, c):
     """ Function to classify triangle """
 
-    triangle = SimpleTriangle(a, b, c)
+    try:
+        triangle = SimpleTriangle(a, b, c)
+
+    except ValueError:
+        return "All 3 sides are not integers"
+
+    except ArithmeticError:
+        return "Sum of 2 sides not greater than or equal to the third side"
+
+    except AttributeError:
+        return "Triangle cannot have side with length <= 0"
 
     if triangle.equilateral():
         return "Equilateral Triangle"
